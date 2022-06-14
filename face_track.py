@@ -19,11 +19,11 @@ print(me.get_battery())
 #Starting the VideoStream
 me.streamon()
 #Takeoff
-#me.takeoff()
+me.takeoff()
 #taking it to optimal height (Depend on the height of person-mine was 175cm-Ram )
-#me.send_rc_control(0, 0, 25, 0)
+me.send_rc_control(0, 0, 25, 0)
 #Sleep feature for 2.0 sec
-time.sleep(2.0)
+time.sleep(30.0)
 #face_position_detection
 fwd_bwd_range = [6198, 6798]
 #PID control -- Incremental PID---- I'm going to integrate the deviation over and over again
@@ -47,18 +47,21 @@ def find_my_face(img):
         cx = x + w // 2
         cy = y + h // 2
         area = w * h
-        #Face center image_detection
+        #Face center image_detection with  cv2 library
         cv2.circle(img, (cx, cy), 5, (0, 255, 0), cv2.FILLED)
-        #adding both real time values to the
+        #adding both of the list of images acces
         myFaceList.append([cx, cy])
+        #adding the ares to out list factor using the
         myFaceListArea.append(area)
+        #adding a list to the list appendix area with a conditional loop access
     if len(myFaceListArea) != 0:
         i = myFaceListArea.index(max(myFaceListArea))
         return img, [myFaceList[i], myFaceListArea[i]]
     else:
         return img, [[0.0], 0]
 
-#PID Control System
+#PID Control Divison to insure the image and control feedback using trackf function
+#Area metric division for image far-close detection
 def trackF(info, w, pid, pError):
     area = info[1]
     x, y = info[0]
@@ -93,4 +96,4 @@ while True:
     cv2.imshow("Output", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         me.land()
-        break
+    break
